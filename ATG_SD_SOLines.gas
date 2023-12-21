@@ -1,0 +1,37 @@
+Program.Sub.ScreenSU.Start
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+V.Local.sPart.Declare(String)
+V.Local.sRev.Declare(String)
+V.Local.sLoc.Declare(String)
+
+F.Intrinsic.Control.If(V.Caller.Hook,=,12410)
+	V.Local.sPart.Set(V.Passed.000052)
+	V.Local.sRev.Set(V.Passed.000053)
+	V.Local.sLoc.Set(V.Passed.000054)
+
+	F.Intrinsic.Control.If(V.Local.sPart,<>,"")
+		F.Global.Inventory.CallSD(V.Local.sPart,V.Local.sRev,V.Local.sLoc,V.Caller.CompanyCode)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.UI.Msgbox("No Part has been selected, please select a part and then click on the S and D button again!","No Part Selected")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Elseif(V.Caller.Hook,=,12010)
+	V.Passed.000162.Set("S and D")
+F.Intrinsic.Control.EndIf
+
+Program.Sub.Main.End
+
+Program.Sub.Comments.Start
+${$0$}$ATG_SD_SOLines.gas$}$ENM$}$6/18/2012
+${$1$}$$}$$}$1$}$12010$}$OES0201I-POPULATE-HOOK$}$6/18/2012 9:54:56 PM$}$(Program: ORD201; Screen: OES0201I)
+
+${$1$}$$}$$}$0$}$12410$}$OES0201I-SCRIPT-1-HOOK$}$6/18/2012 9:48:14 PM$}$(Program: ORD201; Screen: OES0201I)
+
+${$3$}$0$}$$}$-1$}$-1$}$$}$1/1/1900$}$This will launch the Supply and Demand screen based on the Part being selected on the Sales Order Lines screen, off of the Script 1 button.
+Program.Sub.Comments.End
+
