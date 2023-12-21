@@ -1,0 +1,466 @@
+Program.Sub.ScreenSU.Start
+gui.F_Courier..create
+gui.F_Courier..caption("Courier")
+gui.F_Courier..size(8640,7230)
+gui.F_Courier..position(0,0)
+gui.F_Courier..event(unload,Unload)
+gui.F_Courier..alwaysontop(False)
+gui.F_Courier..fontname("Tahoma")
+gui.F_Courier..fontsize(8)
+gui.F_Courier..forecolor(0)
+gui.F_Courier..fontstyle(False,False,False,False,)
+gui.F_Courier..BackColor(-2147483633)
+gui.F_Courier..controlbox(True)
+gui.F_Courier..maxbutton(False)
+gui.F_Courier..minbutton(False)
+gui.F_Courier..mousepointer(0)
+gui.F_Courier..moveable(True)
+gui.F_Courier..sizeable(False)
+gui.F_Courier..ShowInTaskBar(True)
+gui.F_Courier..titlebar(True)
+gui.F_Courier.lblFrom.create(label,"Date Range",True,1935,255,1,200,175,True,0,Tahoma,8,-2147483633,0)
+gui.F_Courier.dtpFrom.create(datepicker)
+gui.F_Courier.dtpFrom.visible(True)
+gui.F_Courier.dtpFrom.size(1560,300)
+gui.F_Courier.dtpFrom.zorder(0)
+gui.F_Courier.dtpFrom.position(200,600)
+gui.F_Courier.dtpFrom.enabled(True)
+gui.F_Courier.dtpFrom.checkbox(False)
+gui.F_Courier.lblTO.create(label,"End Date",True,1935,255,1,1800,400,True,0,Tahoma,8,-2147483633,0)
+gui.F_Courier.dtpTo.create(datepicker)
+gui.F_Courier.dtpTo.visible(True)
+gui.F_Courier.dtpTo.size(1560,315)
+gui.F_Courier.dtpTo.zorder(0)
+gui.F_Courier.dtpTo.position(1800,600)
+gui.F_Courier.dtpTo.enabled(True)
+gui.F_Courier.dtpTo.checkbox(False)
+gui.F_Courier.cmdLoad.create(button)
+gui.F_Courier.cmdLoad.caption("Load")
+gui.F_Courier.cmdLoad.visible(True)
+gui.F_Courier.cmdLoad.size(855,315)
+gui.F_Courier.cmdLoad.zorder(0)
+gui.F_Courier.cmdLoad.position(3390,600)
+gui.F_Courier.cmdLoad.enabled(True)
+gui.F_Courier.cmdLoad.fontname("Tahoma")
+gui.F_Courier.cmdLoad.fontsize(8)
+gui.F_Courier.cmdLoad.event(click,cmdload_click)
+gui.F_Courier.gsflxCourier.create(gsflexgrid)
+gui.F_Courier.gsflxCourier.FixedRows(0)
+gui.F_Courier.gsflxCourier.FixedCols(0)
+gui.F_Courier.gsflxCourier.visible(True)
+gui.F_Courier.gsflxCourier.size(8030,2655)
+gui.F_Courier.gsflxCourier.zorder(0)
+gui.F_Courier.gsflxCourier.position(200,1000)
+gui.F_Courier.gsflxCourier.enabled(True)
+gui.F_Courier.gsflxCourier.event(mouseup,gsflxcourier_mouseup)
+gui.F_Courier.gsflxCourier.event(commandclick,gsflxcourier_commandclick)
+gui.F_Courier.lblBody.create(label,"Body",True,1935,255,1,200,3700,True,0,Tahoma,8,-2147483633,0)
+gui.F_Courier.mltxtBody.create(textboxm)
+gui.F_Courier.mltxtBody.text("")
+gui.F_Courier.mltxtBody.visible(True)
+gui.F_Courier.mltxtBody.size(8030,1170)
+gui.F_Courier.mltxtBody.zorder(0)
+gui.F_Courier.mltxtBody.position(200,3900)
+gui.F_Courier.mltxtBody.enabled(False)
+gui.F_Courier.mltxtBody.alignment(0)
+gui.F_Courier.mltxtBody.fontname("Tahoma")
+gui.F_Courier.mltxtBody.fontsize(8)
+gui.F_Courier.mltxtBody.BackColor(-2147483643)
+gui.F_Courier.lblAttachment.create(label,"Attachment",True,1935,240,1,200,5100,True,0,Tahoma,8,-2147483633,0)
+gui.F_Courier.lvwAttach.create(listview)
+gui.F_Courier.lvwAttach.view(3)
+gui.F_Courier.lvwAttach.addlistviewcolumn("Attachment Name",6495,0)
+gui.F_Courier.lvwAttach.visible(True)
+gui.F_Courier.lvwAttach.size(8060,1275)
+gui.F_Courier.lvwAttach.zorder(0)
+gui.F_Courier.lvwAttach.position(200,5300)
+gui.F_Courier.lvwAttach.enabled(True)
+gui.F_Courier.lvwAttach.borderstyle(0)
+gui.F_Courier.lvwAttach.fontname("Tahoma")
+gui.F_Courier.lvwAttach.fontsize(8)
+gui.F_Courier.lvwAttach.event(dblclick,lvwattach_dblclick)
+gui.F_Courier.lblStrtDate.create(label,"Start Date",True,1935,255,1,200,400,True,0,Tahoma,8,-2147483633,0)
+gui.F_Courier.dtpFrom.tabstop(True)
+gui.F_Courier.dtpFrom.tabindex(1)
+gui.F_Courier.dtpTo.tabstop(True)
+gui.F_Courier.dtpTo.tabindex(2)
+gui.F_Courier.cmdLoad.tabstop(True)
+gui.F_Courier.cmdLoad.tabindex(3)
+gui.F_Courier.mltxtBody.tabstop(True)
+gui.F_Courier.mltxtBody.tabindex(4)
+gui.F_Courier.lvwAttach.tabstop(True)
+gui.F_Courier.lvwAttach.tabindex(5)
+
+
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Variable.Global.iType.Declare(Long,0)
+
+Variable.Global.bBusy.Declare(Boolean,False)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Coded by: SUPERVSR
+'Project Start Date: 3/23/2011
+V.Local.bLog.Declare(Boolean)
+
+'Check if the courier logging is on
+F.Global.General.ReadOptionCommon(3170,0,0,0,False,V.Local.bLog)
+
+'If the courier logging is turned off
+F.Intrinsic.Control.If(V.Local.bLog,=,False)
+	'Notify the user
+	F.Intrinsic.UI.Msgbox("Please turn the Courier Logging on","Courier")
+	'End the process
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.Endif
+
+'Check to see if the courier logging is of type full or summary
+F.Global.General.ReadOptionCommon(3170,100,0,3,0,V.Global.iType)
+F.Intrinsic.Control.If(V.Global.iType,=,1)
+	'set the global variable iType to full
+	V.Global.iType.Set(1)
+F.Intrinsic.Control.Else
+	'set the global variable iType to summary
+	V.Global.iType.Set(0)
+F.Intrinsic.Control.EndIf
+
+'Open connection to the database
+F.ODBC.Connection!con.OpenConnection(V.Ambient.cCon,V.Ambient.cUser,V.Ambient.cPass)
+
+'Call to subroutines that set up the flexgrid and its styles
+F.Intrinsic.Control.CallSub(Setupflex)
+F.Intrinsic.Control.CallSub(Buildstyle)
+
+'Call the ToolTips
+F.Intrinsic.Control.CallSub(Tooltip)
+
+'show the form
+Gui.F_Courier..Show
+
+
+
+Program.Sub.Main.End
+
+program.sub.Unload.start
+F.ODBC.Connection!con.Close
+F.Intrinsic.Control.End
+
+program.sub.Unload.end
+
+Program.Sub.SetUpFlex.Start
+'Declare the number of rows and columns in the Flexgrid
+Gui.F_Courier.gsflxCourier.Rows(2)
+Gui.F_Courier.gsflxCourier.Cols(6)
+
+'Set the column headers
+Gui.F_Courier.gsflxCourier.TextMatrix(0,0,"EHID")
+'EHID is made invisible
+Gui.F_Courier.gsflxCourier.ColWidth(0,0)
+Gui.F_Courier.gsflxCourier.TextMatrix(1,0,"Subject")
+Gui.F_Courier.gsflxCourier.ColWidth(1,1000)
+Gui.F_Courier.gsflxCourier.TextMatrix(2,0,"Sender EMail")
+Gui.F_Courier.gsflxCourier.ColWidth(2,2000)
+Gui.F_Courier.gsflxCourier.TextMatrix(3,0,"Reciepient EMail")
+Gui.F_Courier.gsflxCourier.ColWidth(3,2000)
+Gui.F_Courier.gsflxCourier.TextMatrix(4,0,"Sent DT")
+Gui.F_Courier.gsflxCourier.ColWidth(4,1700)
+'Column with the Resend button  has no title
+Gui.F_Courier.gsflxCourier.TextMatrix(5,0,"")
+Gui.F_Courier.gsflxCourier.ColWidth(5,1000)
+
+'Fix the header
+Gui.F_Courier.gsflxCourier.FixedRows(1)
+
+Program.Sub.SetUpFlex.End
+
+Program.Sub.BuildStyle.Start
+V.Local.iCt.Declare(Long)
+
+'Building Style for the columns 0 through 4
+F.Intrinsic.Control.For(V.Local.iCt,0,4,1)
+	Gui.F_Courier.gsflxCourier.BuildStyle(1,V.Local.iCt,"Type","Locked",True)
+	Gui.F_Courier.gsflxCourier.BuildStyle(1,V.Local.iCt,"Format","Alignment",2)
+F.Intrinsic.Control.Next(V.Local.iCt)
+
+'Building style for the column with the Resend Button- for full logging
+Gui.F_Courier.gsflxCourier.BuildStyle(2,5,"Type","Command","Resend")
+Gui.F_Courier.gsflxCourier.BuildStyle(2,5,"Format","Alignment",4)
+
+'Courier with full logging and rows with no resend button
+Gui.F_Courier.gsflxCourier.BuildStyle(3,5,"Type","Locked",True)
+
+
+Program.Sub.BuildStyle.End
+
+program.sub.cmdload_click.start
+F.Intrinsic.Control.If(V.Global.bBusy,=,True)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'Set the Global variable to true-Exits the sub for more than a single click
+V.Global.bBusy.Set(True)
+
+V.Local.sSql.Declare(String)
+V.Local.sDateStart.Declare(String)
+V.Local.sDateEnd.Declare(String)
+V.Local.dDate.Declare(Date)
+V.Local.iR.Declare(Long,1)
+V.Local.iRow.Declare(Long)
+V.Local.bAttch.Declare(Boolean)
+V.Local.sFormat.Declare(String)
+
+'Clear the body and attachment fields
+Gui.F_Courier.mltxtBody.Text("")
+Gui.F_Courier.lvwAttach.ClearItems
+
+Gui.F_Courier.gsflxCourier.Rows(1)
+F.Intrinsic.Control.CallSub(Setupflex)
+
+'Set the Start Date to a local variable
+V.Local.dDate.Set(V.Screen.F_Courier!dtpFrom.Value)
+F.Intrinsic.String.Format(V.Local.dDate,"YYYY-MM-DD",V.Local.sDateStart)
+F.Intrinsic.String.Concat(V.Local.sDateStart," 00:01:00",V.Local.sDateStart)
+
+'Set End Date to a local variable
+V.Local.dDate.Set(V.Screen.F_Courier!dtpTo.Value)
+F.Intrinsic.String.Format(V.Local.dDate,"YYYY-MM-DD",V.Local.sDateEnd)
+F.Intrinsic.String.Concat(V.Local.sDateEnd," 23:59:00",V.Local.sDateEnd)
+
+'Check to see the date range is vaild
+F.Intrinsic.Control.if(V.Screen.F_Courier!dtpFrom.Value,>,V.Screen.F_Courier!dtpTo.Value)
+	F.Intrinsic.UI.Msgbox("Select a valid date range "," Invalid Date Range")
+	V.Global.bBusy.Set(False)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Concat("Select EHID, Subject, SenderEmail, RecipientEmail, SentDT FROM COURIER_EMAILHIST WHERE SentDT Between '",V.Local.sDateStart,"' and '",V.Local.sDateEnd,"' Order By SentDT",V.Local.sSql)
+
+F.ODBC.Connection!con.OpenRecordsetRO("rst",V.Local.sSql)
+
+'If there are no records in the selecetd range of dates
+F.Intrinsic.Control.If(V.ODBC.con!rst.EOF,=,True)
+	F.Intrinsic.UI.Msgbox("There are no records between the selected dates","Date Range")
+	F.ODBC.con!rst.Close
+	V.Global.bBusy.Set(False)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'Set the flexgrid to invisible, when it is being loaded
+Gui.F_Courier.gsflxCourier.Visible(false)
+Gui.F_Courier..MousePointer(11)
+
+'Populate the flexgrid
+F.Intrinsic.Control.DoUntil(V.ODBC.con!rst.EOF,=,True)
+	F.Intrinsic.Math.Add(V.Local.iR,1,V.Local.iRow)
+	Gui.F_Courier.gsflxCourier.Rows(V.Local.iRow)
+	Gui.F_Courier.gsflxCourier.TextMatrix(0,V.Local.iR,V.ODBC.con!rst.FieldVal!EHID)
+	Gui.F_Courier.gsflxCourier.TextMatrix(1,V.Local.iR,V.ODBC.con!rst.FieldVal!Subject)
+	Gui.F_Courier.gsflxCourier.TextMatrix(2,V.Local.iR,V.ODBC.con!rst.FieldVal!SenderEmail)
+	Gui.F_Courier.gsflxCourier.TextMatrix(3,V.Local.iR,V.ODBC.con!rst.FieldVal!RecipientEmail)
+	F.Intrinsic.String.Format(V.ODBC.con!rst.FieldVal!SentDT,"mm-dd-yyyy hh:nn AMPM",V.Local.sFormat)
+	Gui.F_Courier.gsflxCourier.TextMatrix(4,V.Local.iR,V.Local.sFormat)
+	Gui.F_Courier.gsflxCourier.ApplyStyle(V.Local.iR,1)
+	'If the courier logging is full
+	F.Intrinsic.Control.If(V.Global.iType,=,1)
+
+		'Check for the attachments
+		F.Intrinsic.String.Concat("select AHID from COURIER_EMLHISTATT where EHID = ",V.ODBC.con!rst.FieldVal!EHID,V.Local.sSql)
+
+		F.ODBC.Connection!con.OpenRecordsetRO("rstAtt",V.Local.sSql)
+		F.Intrinsic.Control.If(V.ODBC.con!rstAtt.EOF,=,False)
+			'Set bAttach to True if attachments are found
+			V.Local.bAttch.Set(True)
+		F.Intrinsic.Control.Else
+			V.Local.bAttch.Set(False)
+		F.Intrinsic.Control.EndIf
+		F.ODBC.con!rstAtt.Close
+
+		'Check for the DoNotAllowResend button
+		F.Intrinsic.String.Concat("Select DoNotAllowResend from COURIER_EMAILHIST Where EHID =",V.ODBC.con!rst.FieldVal!EHID,V.Local.sSql)
+		
+		F.ODBC.Connection!con.OpenRecordsetRO("rstResend",V.Local.sSql)
+		F.Intrinsic.Control.If(V.ODBC.con!rstResend.EOF,=,False)
+			F.Intrinsic.Control.If(V.ODBC.con!rstResend.FieldVal!DoNotAllowResend,=,"True")
+				V.Local.bAttch.Set(False)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		F.ODBC.con!rstResend.Close
+
+		F.Intrinsic.String.Concat("select Body from COURIER_EMLHISTBODY Where EHID = ",V.ODBC.con!rst.FieldVal!EHID,V.Local.sSql)
+
+		F.ODBC.Connection!con.OpenRecordsetRO("rstBody",V.Local.sSql)
+		F.Intrinsic.Control.If(V.ODBC.con!rstBody.EOF,=,False)
+			'check if the body is null
+			F.Intrinsic.Control.If(V.ODBC.con!rstBody.FieldVal!Body,=,"")
+			'Check if the mail has no attachments
+			F.Intrinsic.Control.AndIf(V.Local.bAttch,=,False)
+				Gui.F_Courier.gsflxCourier.ApplyStyle(V.Local.iR,3)
+			F.Intrinsic.Control.Else
+				'Applystyle for the column with RESEND button
+				Gui.F_Courier.gsflxCourier.ApplyStyle(V.Local.iR,2)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		F.ODBC.con!rstBody.Close
+	F.Intrinsic.Control.Else
+		Gui.F_Courier.gsflxCourier.ApplyStyle(V.Local.iR,3)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.Math.Add(V.Local.iR,1,V.Local.iR)
+	F.ODBC.con!rst.MoveNext
+F.Intrinsic.Control.Loop
+
+'Close the recordset
+F.ODBC.con!rst.Close
+
+Gui.F_Courier..MousePointer(0)
+'Set the flexgrid to visible
+Gui.F_Courier.gsflxCourier.Visible(true)
+
+'Setting the Global variable to false
+V.Global.bBusy.Set(False)
+
+program.sub.cmdload_click.end
+
+program.sub.gsflxcourier_mouseup.start
+'Stop Multiple Click event from firing
+F.Intrinsic.Control.If(V.Global.bBusy,=,True)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+'Set the Global variable to true-Exits the sub for more than a single click
+V.Global.bBusy.Set(True)
+
+V.Local.sSql.Declare(String)
+V.Local.iEHID.Declare(String)
+V.Local.sBody.Declare(String)
+V.Local.sKey.Declare(String)
+V.Local.sResend.Declare(String)
+
+'If courier logging is full
+F.Intrinsic.Control.If(V.global.iType,=,1)
+	'Clear the body and attachment
+	Gui.F_Courier.mltxtBody.Text("")
+	Gui.F_Courier.lvwAttach.ClearItems
+
+	'Get the EHID value for the row
+	Gui.F_Courier.gsflxCourier.GetTextMatrix(0,V.Args.MouseRow,V.Local.iEHID)
+
+	'If the Grid is not Loaded
+	F.Intrinsic.Control.If(V.Local.iEHID,=,"")
+		V.Global.bBusy.Set(False)
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+
+	'Check for the mouseup event on the rows>0- Rows other than header
+	F.Intrinsic.Control.If(V.Args.MouseRow,>,0)
+	'and the column with out the RESEND button
+	F.Intrinsic.Control.AndIf(V.Args.MouseCol,<>,5)
+
+		'Fill in the body field
+		F.Intrinsic.String.Concat("Select Body from COURIER_EMLHISTBODY where EHID =",V.Local.iEHID,V.Local.sSql)
+		F.ODBC.Connection!con.OpenLocalRecordsetRW("rstBdy",V.Local.sSql)
+		F.Intrinsic.Control.If(V.ODBC.con!rstbdy.EOF,=,False)
+			V.Local.sBody.Set(V.ODBC.con!rstbdy.FieldVal!Body)
+			Gui.F_Courier.mltxtBody.Text(V.Local.sBody)
+		F.Intrinsic.Control.EndIf
+		F.ODBC.con!rstBdy.Close
+
+		'Fill in the attachments
+		F.Intrinsic.String.Concat("select AHID, AttachmentName from COURIER_EMLHISTATT where EHID =",V.Local.iEHID,V.Local.sSql)
+		F.ODBC.Connection!con.OpenLocalRecordsetRO("rstAttch",V.Local.sSql)
+		F.Intrinsic.Control.DoUntil(V.ODBC.con!rstAttch.EOF,=,True)
+'			Populating the listview with the attachments
+			v.Local.sKey.Set(V.ODBC.con!rstAttch.FieldVal!AHID)
+			Gui.F_Courier.lvwAttach.AddListItem(V.Local.sKey,V.ODBC.con!rstAttch.FieldValLTrim!AttachmentName)
+'			Gui.F_Courier.lvwAttach.SetListItemSubItemText(V.Local.sKey,1,V.ODBC.con!rstAttch.FieldValLTrim!AttachmentName)
+			F.ODBC.con!rstAttch.MoveNext
+		F.Intrinsic.Control.loop
+		F.ODBC.con!rstAttch.Close
+	F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.EndIf
+
+'Set the Global variable to false, for the next click
+V.Global.bBusy.Set(False)
+
+program.sub.gsflxcourier_mouseup.end
+
+program.sub.gsflxcourier_commandclick.start
+'Resend the message
+
+V.Local.sSql.Declare(String)
+V.Local.iEHID.Declare(Long)
+V.Local.bSent.declare(Boolean)
+
+'Set the Value for the iEHID
+Gui.F_Courier.gsflxCourier.GetTextMatrix(0,V.Args.Key,V.Local.iEHID)
+
+'Resend the Message
+F.Global.Messaging.ResendMessage(V.Local.iEHID,V.Local.bSent)
+
+'If the message wasnt sent
+F.Intrinsic.Control.If(V.Local.bSent,=,False)
+	'Diaplay the message status
+	F.Intrinsic.UI.Msgbox("Message Sending Failed","Message Status")
+F.Intrinsic.Control.Else
+	'Reload the grid
+	f.Intrinsic.Control.CallSub(cmdload_click)
+	'Diaplay the message status
+	F.Intrinsic.UI.Msgbox("Message Successfully sent","Message Status")
+F.Intrinsic.Control.EndIf
+
+program.sub.gsflxcourier_commandclick.end
+
+Program.Sub.ToolTip.Start
+'ToolTips for the Date Pickers
+Gui.F_Courier.dtpFrom.ToolTip("Select Start Date")
+Gui.F_Courier.dtpTo.ToolTip("Select End Date")
+
+'ToolTip for the Cmd Buttons
+Gui.F_Courier.cmdLoad.ToolTip("Displays the list of mails in the selected date range")
+
+'ToolTip for the Body Field
+Gui.F_Courier.mltxtBody.ToolTip("Body of the email")
+
+'ToolTip for the Attachments
+Gui.F_Courier.lvwAttach.ToolTip("List of attachments")
+
+Program.Sub.ToolTip.End
+
+program.sub.lvwattach_dblclick.start
+F.Intrinsic.Control.If(V.Global.bBusy,=,True)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+'Set the Global variable to true-Exits the sub for more than a single click
+V.Global.bBusy.Set(True)
+
+'Open the attachment
+V.Local.sSql.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.iKey.Declare(Long)
+
+'Set the Item key to the iKey variable
+V.Local.iKey.Set(V.Screen.F_Courier!lvwAttach.SelectedItemKey)
+
+F.Intrinsic.String.Concat("Select AttachmentName, Attachment from COURIER_EMLHISTATT where AHID = ",V.Local.iKey,V.Local.sSql)
+
+F.ODBC.Connection!con.OpenRecordsetRW("rstOpenAtt",V.Local.sSql)
+
+'Save the file to the temp directory- V.System.Temp, and store it in a variable V.Local.sRet
+F.Intrinsic.String.Concat(V.System.Temp,"\",V.ODBC.con!rstOpenAtt.FieldVal!AttachmentName,V.Local.sRet)
+
+'Saving the Blob field to the file specified
+F.ODBC.con!rstOpenAtt.SaveBLOBToFile("Attachment",V.Local.sRet)
+
+'Close the recordset
+F.ODBC.con!rstOpenAtt.Close
+
+'Open the file
+F.Intrinsic.Task.ShellExec(V.Caller.Handle,"Open",V.Local.sRet," "," ",5)
+
+V.Global.bBusy.Set(False)
+
+program.sub.lvwattach_dblclick.end
+
+
